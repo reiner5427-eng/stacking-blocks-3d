@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="description" content="우리 반에서 만든 게임과 학습 놀이터를 한 곳에서. 게임을 둘러보고, 설명을 읽고, 바로 플레이하세요." />
+  <meta property="og:title" content="우리 반 GAME LAND — 배움의 게임 포털" />
+  <meta property="og:description" content="하나의 입구, 끝없는 모험. 학습 게임부터 레이싱까지." />
+  <title>GAME LAND | 우리 반 게임랜드</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#discover">게임 목록으로 건너뛰기</a>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="header" id="top">
+    <div class="header-inner wrap">
+      <a class="brand" href="#top" aria-label="게임랜드 홈"><span class="brand-icon" aria-hidden="true">✳</span><span><strong>GAME<span class="brand-accent">LAND</span></strong><small>THE CLASSROOM ARCADE</small></span></a>
+      <nav class="top-nav" aria-label="상단 메뉴">
+        <a href="#discover" class="nav-link active">게임 둘러보기</a>
+        <a href="#about" class="nav-link">게임랜드 소개</a>
+      </nav>
+      <button class="my-list" id="favoriteJump" type="button" aria-label="즐겨찾기한 게임 보기"><span aria-hidden="true">♡</span> 나의 찜 목록 <span id="favoriteCount" class="fav-count">0</span></button>
+    </div>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="heroHeading">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot"></span> WELCOME TO OUR PLAYGROUND <span class="eyebrow-line"></span> VER. 01</p>
+        <h1 id="heroHeading">배움의 순간이<br /><em>모험이 되는 곳.</em></h1>
+        <p class="hero-description">퀴즈를 풀고, 친구와 기록을 겨루고, 새로운 세계를 탐험해요.<br class="desktop-break" /> 우리가 함께 만든 게임이 모두 여기에!</p>
+        <div class="hero-buttons"><a class="button button-primary" href="#discover">게임 탐험 시작하기 <span aria-hidden="true">↗</span></a><button class="button button-secondary" id="randomPick" type="button">✦ 랜덤 게임 추천</button></div>
+        <div class="hero-stats" aria-label="게임랜드 현황"><div><strong id="statTotal">0</strong><span>등록 게임·도구</span></div><div class="stat-line"></div><div><strong id="statReady">0</strong><span>실행 링크 등록</span></div><div class="stat-line"></div><div><strong>∞</strong><span>도전할 가능성</span></div></div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-stars stars-a">✦</div><div class="hero-stars stars-b">✧</div><div class="hero-stars stars-c">✦</div>
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        <div class="hero-floating float-left"><span>★</span> LEVEL UP!</div>
+        <div class="hero-floating float-right"><span>🏆</span> HIGH SCORE</div>
+        <div class="hero-mascot"><span>🐱</span></div>
+        <div class="hero-base"></div>
+        <span class="hero-pixel pixel-1">✚</span><span class="hero-pixel pixel-2">✚</span><span class="hero-pixel pixel-3">●</span>
+      </div>
+      <div class="hero-index" aria-hidden="true">PLAY MORE · LEARN MORE ·</div>
+    </section>
+    <section class="spotlight wrap" aria-label="오늘의 추천 게임">
+      <div class="spotlight-visual" aria-hidden="true"><span class="spotlight-emoji">🌏</span><span class="spotlight-mini">✷</span></div>
+      <div class="spotlight-content"><span class="mini-label">✦ EDITOR'S PICK / 추천 게임</span><h2>뚱냥이의 시장경제 퀴즈</h2><p>정답을 맞힐 때마다 고양이의 몸무게가 쑥쑥! 사회 공부도 하고 최고 기록에도 도전하세요.</p><div class="spotlight-meta"><span>사회</span><span>퀴즈</span><span>명예의 전당</span></div></div>
+      <button id="featuredButton" type="button" class="spotlight-button" aria-label="추천 게임 상세 보기">↗</button>
+    </section>
+    <section class="games-section wrap" id="discover" aria-labelledby="discoverHeading">
+      <div class="section-heading"><div><p class="eyebrow section-eyebrow">THE COLLECTION / 01</p><h2 id="discoverHeading">게임 라이브러리<span class="heading-point">.</span></h2><p>오늘은 어떤 게임으로 모험을 시작할까요?</p></div><div class="sort-hint" aria-hidden="true">CURATED FOR OUR CLASS <span>✻</span></div></div>
+      <div class="toolbar">
+        <div class="tabs" role="group" aria-label="게임 종류"><button type="button" class="tab active" data-filter="all" aria-pressed="true">전체 <span id="allCount">0</span></button><button type="button" class="tab" data-filter="국어" aria-pressed="false">국어</button><button type="button" class="tab" data-filter="수학" aria-pressed="false">수학</button><button type="button" class="tab" data-filter="사회" aria-pressed="false">사회</button><button type="button" class="tab" data-filter="레이싱" aria-pressed="false">레이싱</button><button type="button" class="tab" data-filter="액션" aria-pressed="false">액션</button><button type="button" class="tab" data-filter="도구" aria-pressed="false">도구</button><button type="button" class="tab" data-filter="favorite" aria-pressed="false">♡ 찜한 게임</button></div>
+        <div class="tools"><label class="search-box"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="searchInput" type="search" autocomplete="off" aria-label="게임 검색" placeholder="게임 이름 검색..." /><span class="search-key">⌘ K</span></label><select id="sortSelect" aria-label="게임 정렬"><option value="default">추천 순</option><option value="name">이름 순</option><option value="ready">실행 가능 먼저</option></select></div>
+      </div>
+      <div class="result-line"><span id="resultCount">게임을 불러오는 중</span><span class="result-decoration" aria-hidden="true">✦ PICK YOUR ADVENTURE</span></div>
+      <div id="gameGrid" class="game-grid" aria-live="polite"></div>
+      <div id="emptyState" class="empty-state" hidden><span>🪐</span><h3>검색 결과가 없어요</h3><p>다른 검색어나 분류를 선택해 주세요.</p><button id="resetSearch" type="button">전체 게임 보기 →</button></div>
+      <div class="collection-end"><span>✳</span> MORE GAMES, MORE STORIES, MORE FUN. <span>✳</span></div>
+    </section>
+    <section class="about wrap" id="about"><div class="about-icon" aria-hidden="true">✳</div><div><p class="eyebrow">OUR LITTLE UNIVERSE</p><h2>하나의 입구, 끝없는 게임.</h2><p>게임랜드는 우리가 만든 교육용 게임을 모아 놓은 공간이에요. 게임을 누르면 소개를 확인할 수 있고, 실행 주소가 연결된 게임은 바로 시작할 수 있어요. 각 게임의 점수와 명예의 전당은 해당 게임에서 그대로 운영됩니다.</p></div><div class="about-tag">CREATED TO LEARN<br/>BUILT TO PLAY</div></section>
+  </main>
+  <footer class="footer"><div class="wrap footer-inner"><div class="footer-brand">✳ <strong>GAMELAND</strong><span>OUR CLASS, OUR WORLD.</span></div><span>MADE FOR CURIOUS MINDS © 2026</span><a href="#top">맨 위로 ↑</a></div></footer>
+  <div class="dialog-backdrop" id="dialogBackdrop" hidden>
+    <div class="detail-dialog" id="detailDialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle" tabindex="-1">
+      <button id="dialogClose" class="dialog-close" type="button" aria-label="상세창 닫기">×</button>
+      <div class="detail-art" id="dialogArt" aria-hidden="true"><span id="dialogEmoji">🐱</span><span class="detail-art-label">PRESS START</span></div>
+      <div class="detail-content">
+        <p class="detail-kicker" id="dialogKicker">GAME INFO · 01</p><h2 id="dialogTitle">게임 이름</h2><p id="dialogDescription">게임 설명</p>
+        <div class="detail-divider"></div>
+        <h3>이런 게임이에요</h3><ul id="dialogFeatures" class="feature-list"></ul>
+        <p id="dialogNotice" class="detail-notice"></p>
+        <div class="detail-actions"><a id="dialogPlay" class="button button-primary" href="#" target="_blank" rel="noopener noreferrer">게임 플레이 <span>↗</span></a><a id="dialogSource" class="button button-secondary" href="#" target="_blank" rel="noopener noreferrer">프로젝트 보기 ↗</a><button id="dialogFavorite" class="dialog-favorite" type="button">♡ 찜하기</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
