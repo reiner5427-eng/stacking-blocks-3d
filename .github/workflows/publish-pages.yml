@@ -1,0 +1,44 @@
+name: Publish Game Land and 3D Blocks to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'game-land/**'
+      - 'index.html'
+      - '.github/workflows/publish-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: classroom-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Verify both entry points are present
+        run: |
+          test -f index.html
+          test -f game-land/index.html
+          test -f game-land/style.css
+          test -f game-land/app.js
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload static content (keep existing root 3D blocks site)
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: .
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
