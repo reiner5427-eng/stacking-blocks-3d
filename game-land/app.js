@@ -1,0 +1,89 @@
+"use strict";
+/*
+ * 우리 반 게임랜드 / Game Land
+ * 새 게임 등록: 아래 GAMES 배열에 한 항목을 추가합니다.
+ * url: 실제 실행 주소가 알려진 경우만 입력. 모르면 null.
+ * source: GitHub 프로젝트 주소가 있으면 입력.
+ * 이 페이지는 게임을 실행하거나 순위 데이터를 보관하지 않습니다.
+ */
+const GAMES = [
+  {id:"market",title:"뚱냥이의 시장경제 퀴즈",short:"고양이와 배우는 시장경제",subject:"사회",genre:"학습 퀴즈",emoji:"🌏",word:"CAT QUIZ",colors:["#32497d","#9f83f5"],url:"https://market-quiz-cat.reiner5427.chatgpt.site/",source:"https://github.com/reiner5427-eng/market-quiz-cat",description:"시장경제와 국가 간 거래 문제에 도전하세요. 정답을 맞힐수록 고양이가 간식을 먹고 몸무게가 늘어나요. 최고 기록을 세우고 명예의 전당에도 이름을 남겨 보세요.",features:["초등 사회 6학년 경제 단원 퀴즈","정답마다 고양이 몸무게와 점수 증가","온라인 명예의 전당으로 기록 경쟁"],featured:true},
+  {id:"ratio",title:"비와 비율 냥퀴즈",short:"문제를 풀고 냥이 성장시키기",subject:"수학",genre:"학습 퀴즈",emoji:"🐱",word:"MATH CAT",colors:["#8b5373","#f2a8bd"],url:"https://ratio-quiz-cat.reiner5427.chatgpt.site/",source:null,description:"비와 비율을 연습하는 고양이 퀴즈 게임입니다. 수학 문제에 도전하고 친구들과 실력을 겨뤄 보세요.",features:["비와 비율 관련 문제 풀이","고양이와 함께하는 퀴즈 형식","닉네임을 이용한 기록 경쟁"]},
+  {id:"crossy",title:"냥냥! 국어 길건너기",short:"길을 건너며 체크포인트 퀴즈",subject:"국어",genre:"학습 액션",emoji:"🚦",word:"CROSSY",colors:["#317768","#8ed7a3"],url:null,source:"https://github.com/reiner5427-eng/first",description:"차량과 기차, 강을 피해 길을 건너고, 체크포인트에서 국어 퀴즈를 풀어요. 언어와 소통을 모험처럼 익히는 게임입니다.",features:["15칸마다 국어 4지선다 체크포인트","차량·기차·강·통나무 장애물 회피","목숨 3개와 기록 경쟁"],note:"GitHub 소스는 확인했지만, 공개 게임 실행 주소의 활성화 여부는 확인되지 않았습니다."},
+  {id:"stackcat",title:"쌓냥이 만들기",short:"공간 감각을 키우는 쌓기나무 게임",subject:"수학",genre:"학습 퀴즈",emoji:"🧱",word:"STACK UP",colors:["#886544","#e3b16d"],url:null,source:null,description:"앞·옆·위에서 본 모습을 살펴 입체 블록을 완성하는 공간 감각 게임입니다. 문제를 맞힐수록 점수와 고양이 몸무게가 늘어납니다.",features:["정면·옆면·윗면을 보고 블록 쌓기","정답마다 점수와 몸무게 증가","명예의 전당 1~200위 기획"],note:"게임 실행 주소를 확인하면 바로 연결할 수 있습니다."},
+  {id:"fattencat",title:"뚱냥이 만들기",short:"나눗셈을 풀고 간식 주기",subject:"수학",genre:"학습 퀴즈",emoji:"🍣",word:"FEED CAT",colors:["#986c53","#f3bd94"],url:null,source:null,description:"나눗셈의 몫과 나머지를 구해 고양이에게 간식을 주세요. 시간 안에 고양이를 얼마나 성장시킬 수 있을까요?",features:["자연수 나눗셈의 몫·나머지 문제","시간 제한 안에 많이 먹이기","몸무게 기록과 명예의 전당"],note:"게임 실행 주소를 확인하면 바로 연결할 수 있습니다."},
+  {id:"idiom",title:"관용 표현 골든벨",short:"우리말 관용어를 즐겁게 배우기",subject:"국어",genre:"학습 퀴즈",emoji:"🔔",word:"GOLDEN BELL",colors:["#7a5ba0","#f2b0cc"],url:null,source:null,description:"우리말 관용 표현을 문제로 만나는 골든벨 퀴즈! 문제를 보고 답을 생각한 뒤 정답을 공개하는 학습 게임입니다.",features:["랜덤 관용 표현 퀴즈","10·20·30문항 선택","문제 → 정답 공개 → 다음 문제"],note:"게임 실행 주소를 확인하면 바로 연결할 수 있습니다."},
+  {id:"karts",title:"KART RUSH",short:"숲속을 달리는 3D 카트레이싱",subject:"레이싱",genre:"3D 레이싱",emoji:"🏎️",word:"KART RUSH",colors:["#164c75","#5ed8d3"],url:"https://apex-evergreen-kart.netlify.app/",source:"https://github.com/reiner5427-eng/kart-racing",description:"귀여운 캐릭터를 골라 숲속 트랙을 달리는 카트 레이싱 게임입니다. 드리프트·부스터·아이템전을 즐기고 최고 랩타임을 갱신하세요.",features:["6종 캐릭터와 3D 트랙","스피드전·아이템전 및 드리프트","기록 경쟁과 온라인 1:1 레이스"]},
+  {id:"teenie",title:"티니 숲속 카트",short:"귀여운 캐릭터와 함께 달려요",subject:"레이싱",genre:"3D 레이싱",emoji:"🏁",word:"FOREST KART",colors:["#4c806c","#9ddd91"],url:"https://teenie-forest-kart-20261006.netlify.app/",source:"https://github.com/reiner5427-eng/teenie-forest-kart-20261006",description:"숲속 테마 카트 레이싱 게임입니다. 캐릭터를 고르고 코너를 돌며 부스터와 아이템을 활용해 즐겁게 달려 보세요.",features:["숲속 테마의 3D 카트 주행","캐릭터 선택과 레이싱 아이템","드리프트와 부스터 조작"]},
+  {id:"evrally",title:"NEON APEX · EV Rally",short:"전기차로 펼치는 미래의 질주",subject:"레이싱",genre:"3D 레이싱",emoji:"⚡",word:"NEON APEX",colors:["#253c83","#bd66f5"],url:"https://neon-apex-ev-rally.netlify.app/",source:"https://github.com/reiner5427-eng/neon-apex-ev-rally",description:"여섯 종류의 전기차를 골라 해안 트랙을 질주하는 3D 레이싱 게임! 드리프트와 부스터를 사용하고 친구와 1:1 온라인 경기도 도전할 수 있어요.",features:["전기차 6종과 3D 해안 레이스","부스터·아이템·드리프트","온라인 1:1 대결 지원"]},
+  {id:"whale",title:"Whale Rider",short:"고래를 타고 바닷속 질주",subject:"레이싱",genre:"횡스크롤 레이싱",emoji:"🐳",word:"WHALE RIDER",colors:["#1d5d87","#54bad1"],url:null,source:"https://github.com/reiner5427-eng/newgame",description:"고래를 타고 1,500m 바다 코스를 달리는 횡스크롤 게임입니다. 진주를 모아 부스트를 충전하고 산호를 피해 완주하세요.",features:["1,500m 바다 코스","진주 수집과 부스트 충전","키보드·모바일 버튼 조작"],note:"게임 소스는 확인했지만 웹 실행 주소는 확인되지 않았습니다."},
+  {id:"pandora",title:"별숲의 수호자",short:"외계 정글의 3D 액션 모험",subject:"액션",genre:"3D 액션",emoji:"🌌",word:"STAR FOREST",colors:["#413f8d","#8da2e8"],url:null,source:"https://github.com/reiner5427-eng/My-app",description:"4명의 수호자 중 한 명을 골라 외계 정글에서 AI 상대와 대결하는 3인칭 액션 게임입니다. 무기를 활용해 점수를 올리고 레벨업하세요.",features:["4명의 수호자와 서로 다른 무기","3분간의 AI 상대 액션 대전","PC와 모바일 조작 지원"],note:"GitHub Pages 배포 방법은 저장소에 있지만 현재 실행 URL의 활성화 여부는 확인되지 않았습니다."},
+  {id:"teacher",title:"학교선생님의 모험",short:"학교생활을 담은 액션 게임",subject:"액션",genre:"액션 어드벤처",emoji:"🏫",word:"SCHOOL QUEST",colors:["#8a5f65","#f5ac93"],url:null,source:"https://github.com/reiner5427-eng/school-teacher-adventure",description:"교실·체험학습·시험을 무대로 다양한 장애물을 넘는 학교생활 액션 게임입니다. 여러 버프 아이템을 활용해 스테이지에 도전하세요.",features:["교실·체험학습·시험 테마 스테이지","다양한 장애물과 캐릭터","버프 아이템을 활용한 도전"],note:"GitHub 프로젝트는 확인했지만 온라인 실행 주소는 확인되지 않았습니다."},
+  {id:"russiancat",title:"길잃은 고양이의 모험",short:"러시안블루와 함께하는 점프 액션",subject:"액션",genre:"점프 액션",emoji:"🐈",word:"CAT QUEST",colors:["#536d82","#a8b9d1"],url:null,source:null,description:"러시안블루 고양이를 주인공으로 한 점프 액션 모험 게임입니다. 귀여운 고양이와 함께 새로운 길을 탐험하세요.",features:["러시안블루 고양이 주인공","점프를 활용한 액션 플레이","모험 테마 게임"],note:"게임 실행 주소를 확인하면 바로 연결할 수 있습니다."},
+  {id:"csatkorean",title:"수능 국어 냥퀴즈",short:"기출 지문으로 도전하는 국어 퀴즈",subject:"국어",genre:"학습 퀴즈",emoji:"📚",word:"KOREAN QUIZ",colors:["#5c5e92","#b8a7d8"],url:null,source:null,description:"수능 국어 기출 지문을 읽고 문제를 풀며 고양이에게 간식을 주는 퀴즈 게임입니다. 같은 지문에 연결된 문제는 지문을 유지해 풀이해요.",features:["국어 지문과 관련 문항을 함께 제공","10분 제한·목숨 5개","정답 시 간식, 오답 시 몸무게 감소"],note:"게임 실행 주소를 확인하면 바로 연결할 수 있습니다."},
+  {id:"blocks3d",title:"차곡차곡 · 쌓기나무 3D",short:"돌려 보고 직접 쌓는 수학 놀이터",subject:"도구",genre:"3D 시뮬레이터",emoji:"🧊",word:"3D BLOCKS",colors:["#367b82","#82d8c9"],url:"https://reiner5427-eng.github.io/stacking-blocks-3d/",source:"https://github.com/reiner5427-eng/stacking-blocks-3d",description:"원하는 위치에 블록을 쌓고 다양한 방향에서 관찰하는 3D 시뮬레이터입니다. 쌓기나무의 구조를 직접 만들고 돌려 보세요.",features:["7×7 바닥 위에 블록 자유롭게 쌓기","정면·옆면·위 시점 전환","마우스·터치 회전과 확대·축소"]}
+];
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const el = (tag,cls,txt) => {const n=document.createElement(tag);if(cls)n.className=cls;if(txt!==undefined)n.textContent=txt;return n};
+const state={filter:"all",query:"",sort:"default",selected:null,previousFocus:null};
+const storageKey="game-land-favorites-v1";
+let favorites=new Set();
+try{const v=JSON.parse(localStorage.getItem(storageKey)||"[]");if(Array.isArray(v)) favorites=new Set(v.filter(x=>GAMES.some(g=>g.id===x)))}catch(_){}
+let toastTimer;
+function notify(msg){const t=$("#toast");t.textContent=msg;t.classList.add("visible");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("visible"),2400)}
+function saveFavorites(){try{localStorage.setItem(storageKey,JSON.stringify([...favorites]))}catch(_){}
+  $("#favoriteCount").textContent=favorites.size}
+function toggleFavorite(id){if(favorites.has(id)){favorites.delete(id);notify("찜 목록에서 뺐어요.")}else{favorites.add(id);notify("나의 찜 목록에 저장했어요 ♡")}saveFavorites();render();if(state.selected?.id===id) updateDetailFavorite()}
+const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function ready(g){return !!g.url}
+function filteredGames(){const q=state.query.toLocaleLowerCase("ko").trim();let arr=GAMES.filter(g=>{
+  const category=state.filter==="all"|| (state.filter==="favorite"?favorites.has(g.id):g.subject===state.filter);
+  const found=!q || [g.title,g.short,g.description,g.subject,g.genre].join(" ").toLocaleLowerCase("ko").includes(q);
+  return category&&found;
+});
+if(state.sort==="name")arr.sort((a,b)=>a.title.localeCompare(b.title,"ko"));if(state.sort==="ready")arr.sort((a,b)=>Number(ready(b))-Number(ready(a)));return arr}
+function render(){
+ const grid=$("#gameGrid");grid.replaceChildren();const arr=filteredGames();const empty=$("#emptyState");empty.hidden=arr.length>0;
+ $("#resultCount").textContent=arr.length+"개의 게임"+(state.filter==="favorite"?" · 찜한 게임":"")+"을 찾았어요";
+ arr.forEach((g,i)=>{
+  const card=el("article","game-card");card.style.setProperty("--c1",g.colors[0]);card.style.setProperty("--c2",g.colors[1]);card.style.animationDelay=Math.min(i*35,210)+"ms";
+  card.innerHTML='<div class="card-art"><span class="art-emoji" aria-hidden="true">'+escapeHTML(g.emoji)+'</span><span class="art-word" aria-hidden="true">'+escapeHTML(g.word)+'</span><span class="art-sticker" aria-hidden="true">GAME / '+String(i+1).padStart(2,"0")+'</span></div><div class="card-body"><div class="card-overline">'+escapeHTML(g.subject)+" · "+escapeHTML(g.genre)+'</div><h3 class="card-title">'+escapeHTML(g.title)+'</h3><p class="card-subtitle">'+escapeHTML(g.short)+'</p><div class="card-footer"><span class="availability '+(ready(g)?"ready":"")+'">'+(ready(g)?"실행 링크 등록":"연결 준비 중")+'</span><span class="card-arrow" aria-hidden="true">↗</span></div></div>';
+  const hit=el("button","card-hit");hit.type="button";hit.setAttribute("aria-label",g.title+" 상세 정보 보기");hit.addEventListener("click",()=>openDetail(g.id));card.appendChild(hit);
+  const fav=el("button","card-favorite",favorites.has(g.id)?"♥":"♡");fav.type="button";fav.setAttribute("aria-label",g.title+(favorites.has(g.id)?" 찜 해제":" 찜하기"));fav.setAttribute("aria-pressed",String(favorites.has(g.id)));fav.addEventListener("click",()=>toggleFavorite(g.id));card.appendChild(fav);
+  grid.appendChild(card);
+ });
+}
+function updateDetailFavorite(){const g=state.selected;if(!g)return;const btn=$("#dialogFavorite");const liked=favorites.has(g.id);btn.textContent=liked?"♥ 찜 완료":"♡ 찜하기";btn.setAttribute("aria-pressed",String(liked))}
+function openDetail(id){
+ const g=GAMES.find(x=>x.id===id);if(!g)return;state.selected=g;state.previousFocus=document.activeElement;
+ const backdrop=$("#dialogBackdrop"),art=$("#dialogArt"),play=$("#dialogPlay"),source=$("#dialogSource");
+ art.style.setProperty("--c1",g.colors[0]);art.style.setProperty("--c2",g.colors[1]);
+ $("#dialogEmoji").textContent=g.emoji;$("#dialogKicker").textContent=(g.subject+" / "+g.genre+" · GAME INFO").toUpperCase();
+ $("#dialogTitle").textContent=g.title;$("#dialogDescription").textContent=g.description;
+ const list=$("#dialogFeatures");list.replaceChildren();g.features.forEach(f=>list.appendChild(el("li","",f)));
+ $("#dialogNotice").textContent=g.note|| (ready(g)?"외부 게임 페이지가 새 창에서 열립니다. 실행 사이트의 접속 상태는 별도로 확인해 주세요.":"게임 실행 주소가 아직 등록되지 않았습니다.");
+ if(ready(g)){play.href=g.url;play.classList.remove("is-disabled");play.removeAttribute("aria-disabled");play.innerHTML='게임 바로 플레이 <span>↗</span>'}
+ else{play.removeAttribute("href");play.classList.add("is-disabled");play.setAttribute("aria-disabled","true");play.textContent="실행 링크 준비 중"}
+ if(g.source){source.hidden=false;source.href=g.source}else{source.hidden=true;source.removeAttribute("href")}
+ updateDetailFavorite();backdrop.hidden=false;document.body.classList.add("dialog-open");$("#dialogClose").focus();
+}
+function closeDetail(){if($("#dialogBackdrop").hidden)return;$("#dialogBackdrop").hidden=true;document.body.classList.remove("dialog-open");state.selected=null;const p=state.previousFocus;if(p&&p.isConnected)p.focus();else $("#discoverHeading").setAttribute("tabindex","-1")}
+function selectFilter(filter){state.filter=filter;$$(".tab").forEach(b=>{const selected=b.dataset.filter===filter;b.classList.toggle("active",selected);b.setAttribute("aria-pressed",String(selected))});render()}
+$$(".tab").forEach(b=>b.addEventListener("click",()=>selectFilter(b.dataset.filter)));
+$("#searchInput").addEventListener("input",e=>{state.query=e.target.value;render()});
+$("#sortSelect").addEventListener("change",e=>{state.sort=e.target.value;render()});
+$("#resetSearch").addEventListener("click",()=>{state.query="";$("#searchInput").value="";selectFilter("all")});
+$("#favoriteJump").addEventListener("click",()=>{selectFilter("favorite");$("#discover").scrollIntoView({behavior:"smooth",block:"start"})});
+$("#randomPick").addEventListener("click",()=>{const arr=GAMES.filter(ready);const g=arr[Math.floor(Math.random()*arr.length)];openDetail(g.id)});
+$("#featuredButton").addEventListener("click",()=>openDetail("market"));
+$("#dialogClose").addEventListener("click",closeDetail);
+$("#dialogBackdrop").addEventListener("click",e=>{if(e.target===$("#dialogBackdrop"))closeDetail()});
+$("#dialogFavorite").addEventListener("click",()=>{if(state.selected)toggleFavorite(state.selected.id)});
+$("#dialogPlay").addEventListener("click",e=>{if(!state.selected?.url)e.preventDefault()});
+document.addEventListener("keydown",e=>{
+ if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();closeDetail();$("#searchInput").focus();$("#discover").scrollIntoView({block:"start"})}
+ if(e.key==="Escape"&&!$("#dialogBackdrop").hidden)closeDetail();
+ if(e.key==="Tab"&&!$("#dialogBackdrop").hidden){const focusables=[$("#dialogClose"),...$$(".detail-dialog a[href]:not([hidden]), .detail-dialog button:not([disabled]):not([hidden])")].filter(n=>n.offsetParent!==null);if(focusables.length){const first=focusables[0],last=focusables[focusables.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}}
+});
+$("#statTotal").textContent=GAMES.length;$("#statReady").textContent=GAMES.filter(ready).length;$("#allCount").textContent=GAMES.length;saveFavorites();render();
