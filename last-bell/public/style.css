@@ -75,3 +75,17 @@
 #endScreen>div{max-height:92dvh;overflow-y:auto;padding:14px 4px}
 
 .setup{flex-wrap:wrap}.low-effects .grain{display:none}.low-effects #quiz{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 4px 14px #0004}.low-effects #mobile #fire{box-shadow:none}.low-effects #mobile #fire.firing{box-shadow:0 0 12px #d8f36a44}
+.boss-warning{position:fixed;z-index:15;left:50%;top:28%;transform:translate(-50%,-50%);width:min(90vw,540px);padding:15px 20px;border-top:2px solid #f2a063;border-bottom:2px solid #f2a063;background:linear-gradient(90deg,#361e1600,#301c18ef 15% 85%,#361e1600);text-align:center;pointer-events:none;animation:boss-warning-in .4s ease-out}.boss-warning strong{display:block;font:900 clamp(30px,6vw,46px) monospace;letter-spacing:8px;color:#ffad6c;text-shadow:0 0 20px #ef5e3688}.boss-warning span{display:block;font-size:20px;font-weight:900;margin:3px 0 7px;color:#ffcf9a}.boss-warning small{font-size:12px;color:#f5cdb1;line-height:1.6}.boss-status{position:fixed;top:187px;left:50%;transform:translateX(-50%);max-width:90vw;padding:7px 14px;background:#261c17c9;border:1px solid #af764d;border-radius:4px;pointer-events:none;display:flex;gap:14px;align-items:center;color:#f3c18e}.boss-status span{font-size:12px;font-weight:700}.boss-status b{font:18px monospace;letter-spacing:4px;color:#f29e64}.boss-status.boss-defeated{border-color:#90ae59;color:#d9ed9c}.boss-status.boss-defeated b{color:#d9ed9c}.game-paused .boss-warning{animation-play-state:paused}
+@keyframes boss-warning-in{from{opacity:0;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@media(pointer:coarse),(max-width:900px){.boss-status{top:165px}}
+@media(orientation:landscape) and (max-height:540px){.boss-warning{top:40%;padding:8px 14px}.boss-warning strong{font-size:30px}.boss-warning span{font-size:16px;margin:2px}.boss-warning small{font-size:11px}.boss-status{top:142px;padding:4px 10px}.boss-status span{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.boss-warning{animation:none}}
+/* Independent right aiming stick, with clear separation from dash. */
+#mobile #fire{width:116px;height:116px;background:radial-gradient(circle,#36502d55 0 54%,#14271dcc 56%);border-color:#b9d878aa;box-shadow:inset 0 0 15px #0005}
+#fire .fire-knob{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:64px;height:64px;border-radius:50%;border:1px solid #e0f8a6;background:radial-gradient(circle at 35% 25%,#71894a,#2c462c);box-shadow:0 3px 10px #0007;will-change:transform;pointer-events:none}
+#fire .fire-knob svg{width:22px;height:32px}#fire .fire-knob>span{font-size:10px}
+#mobile #dash{right:146px;bottom:7px}
+@media(max-width:360px) and (orientation:portrait){.touch-controls #mobile{left:16px;right:16px}#mobile #fire{width:100px;height:100px}#fire .fire-knob{width:58px;height:58px}#mobile #dash{right:128px;width:44px;height:44px}#stick{width:100px;height:100px}#stick i{left:25px;top:25px}#stick:before{left:47px;height:74px}#stick:after{top:47px;width:74px}}
+@media(orientation:landscape){.touch-controls #mobile #dash{right:30px;bottom:155px}.touch-controls #quiz{width:min(480px,calc(100vw - 340px))}}
+#mobile #fire.firing .fire-knob{background:radial-gradient(circle at 35% 25%,#a5bd65,#486c38);border-color:#f0ffc1}
+@media(orientation:landscape) and (max-height:340px){.touch-controls #mobile #dash{bottom:135px}}

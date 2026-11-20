@@ -1,6 +1,6 @@
 // MP3 media playback for iOS Safari and Android; Web Audio remains for effects.
 class Sound {
- constructor(){this.fanfareNodes=[];
+ constructor(){this.fanfareNodes=[];this.sirenNodes=[];
   this.ctx=null;this.volume=.65;this.music=document.getElementById('bgm');this.playAttempt=0;this.blocked=false;
   for(const event of ['playing','pause','error','volumechange'])this.music.addEventListener(event,()=>this.updateStatus());
  }
@@ -41,7 +41,7 @@ class Sound {
   button.setAttribute('title',needsTap?'눌러서 BGM을 재생하세요':'BGM과 효과음');
  }
  pause(on){
-  if(on){this.stopFanfare();++this.playAttempt;this.music.pause();if(this.ctx)try{Promise.resolve(this.ctx.suspend()).catch(()=>{})}catch{};this.updateStatus()}
+  if(on){this.stopSiren();this.stopFanfare();++this.playAttempt;this.music.pause();if(this.ctx)try{Promise.resolve(this.ctx.suspend()).catch(()=>{})}catch{};this.updateStatus()}
   else{
    try{if(window.navigator?.audioSession)window.navigator.audioSession.type='playback'}catch{}
    this.init();this.playMusic();
@@ -57,5 +57,26 @@ fanfare(){
  const play=(f,start,d,volume,type)=>{const node=this.tone(f,d,volume,type,at+start);if(node)this.fanfareNodes.push(node)};
  for(const [f,start,d] of notes){play(f,start,d,.2,'triangle');play(f/2,start,d,.055,'sawtooth')}
  for(const f of [261.63,329.63,392,523.25])play(f,1.28,1.35,.085,'triangle');
+}
+stopSiren(){for(const node of this.sirenNodes||[])try{node.stop()}catch{}this.sirenNodes=[]}
+siren(){
+ this.stopSiren();if(muted||this.volume===0)return;this.init();if(!this.ctx)return;
+ const at=this.ctx.currentTime+.05;
+ // Two bounded up/down sweeps; all nodes are scheduled on the audio clock.
+ for(let cycle=0;cycle<2;cycle++){
+  const start=at+cycle*1.2;
+  const rising=this.tone(440,.6,.18,'triangle',start,880);
+  const falling=this.tone(880,.6,.18,'triangle',start+.6,440);
+  if(rising)this.sirenNodes.push(rising);if(falling)this.sirenNodes.push(falling);
+ }
+}
+bossVictory(){
+ if(muted||this.volume===0)return;this.init();if(!this.ctx)return;
+ const at=this.ctx.currentTime+.025;
+ // A compact electric discharge/chord, separate from the grandmaster fanfare.
+ this.tone(180,.3,.16,'sawtooth',at,65);
+ this.tone(523.25,.28,.12,'triangle',at+.15);
+ this.tone(783.99,.45,.1,'triangle',at+.32);
+ this.tone(1046.5,.55,.08,'sine',at+.43);
 }
 }
