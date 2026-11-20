@@ -36,6 +36,7 @@ console.log('PASS: all 200 rendered rank badges and every tier boundary.');
 
 for(let page=0;page<4;page++){run(`rankingPage=${page};renderRanking()`);for(const tr of elements.get('rankingRows').children){const rank=Number(tr.children[0].textContent.replace('위','')),icon=tr.children[1].children[0].children[0];assert.equal(icon.className,'tier-icon icon-'+run(`rankTier(${rank}).key`));assert.equal(icon.getAttribute('aria-hidden'),'true')}}
 console.log('PASS: all 200 ranks render the correct emblem alongside their tier title.');
+run('start();answerQuestion(question.choices.indexOf(question.answer))');assert.equal(run('questionDelay'),1.2);run('update(1.21)');assert.equal(run('questionDelay'),0);run('answerQuestion(question.choices.findIndex(v=>v!==question.answer))');assert.equal(run('questionDelay'),2.4);run('update(2.41)');assert.equal(run('questionDelay'),0);
 run('audio.fanfare=()=>{this.fanfareCalls=(this.fanfareCalls||0)+1};audio.stopFanfare=()=>{}');
 (async()=>{
 run('start();state="ended";game.score=600;game.kills=4;game.saved=true;recordAPI=async()=>[{nickname:game.nickname,score:600,kills:4,rank:5}]');

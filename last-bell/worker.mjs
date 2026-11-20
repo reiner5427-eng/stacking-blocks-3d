@@ -17,7 +17,7 @@ async function api(request,db,path){
   const round=await db.prepare('SELECT * FROM survivor_runs WHERE id=?').bind(body.id).first();if(!round)return json({error:'게임을 찾지 못했어요.'},404);
   if(round.finished)return json({saved:true,ranked:round.score>0});
   const {score,kills,correct,attempts,elapsed,win}=body;
-  if(![score,kills,correct,attempts].every(Number.isInteger)||score<0||kills<0||kills>700||correct<0||correct>65||attempts<correct||attempts>65||!Number.isFinite(elapsed)||elapsed<0||elapsed>180||typeof win!=='boolean'||(win&&elapsed<180)||score>150*correct*(correct+1)/2+25*kills||score<25*kills||elapsed>(Date.now()-round.started)/1000+3)return json({error:'기록 값을 확인할 수 없어요.'},400);
+  if(![score,kills,correct,attempts].every(Number.isInteger)||score<0||kills<0||kills>700||correct<0||correct>155||attempts<correct||attempts>155||!Number.isFinite(elapsed)||elapsed<0||elapsed>180||typeof win!=='boolean'||(win&&elapsed<180)||score>150*correct*(correct+1)/2+25*kills||score<25*kills||elapsed>(Date.now()-round.started)/1000+3)return json({error:'기록 값을 확인할 수 없어요.'},400);
   await db.prepare('UPDATE survivor_runs SET score=?,kills=?,correct=?,elapsed=?,win=?,finished=1 WHERE id=? AND finished=0').bind(score,kills,correct,elapsed,Number(win),body.id).run();return json({saved:true,ranked:score>0});
  }
  return json({error:'페이지가 없어요.'},404);
