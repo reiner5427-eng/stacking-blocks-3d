@@ -41,3 +41,7 @@ app.js의 GAMES 배열에 아래 형태로 항목을 추가하면 됩니다.
 
 ## GitHub Pages가 안 열릴 때
 GitHub 저장소 Settings → Pages → Build and deployment → Deploy from a branch → main → /(root)에서 배포가 설정되어 있는지 확인하세요. Pages 최초 게시 또는 변경 반영에는 GitHub의 배포 절차가 필요합니다. 기존 게임의 배포 설정을 임의 변경하지 않도록 이 작업은 수행하지 않았습니다.
+
+## LAST BELL · 마지막 종
+
+비례식·비례배분 좀비 생존 게임을 추가했습니다. 소스는 `/last-bell/`, 실행·공유 순위는 Sites에서 운영합니다.

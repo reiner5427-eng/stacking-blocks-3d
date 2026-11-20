@@ -1,0 +1,1 @@
+{"name":"last-bell-ratio-survival","private":true,"type":"module","scripts":{"build":"node build.mjs","test":"node build.mjs && node tests/game-check.cjs && node --test tests/records.test.mjs"}}
