@@ -36,3 +36,12 @@ console.log('PASS: all 200 rendered rank badges and every tier boundary.');
 
 for(let page=0;page<4;page++){run(`rankingPage=${page};renderRanking()`);for(const tr of elements.get('rankingRows').children){const rank=Number(tr.children[0].textContent.replace('위','')),icon=tr.children[1].children[0].children[0];assert.equal(icon.className,'tier-icon icon-'+run(`rankTier(${rank}).key`));assert.equal(icon.getAttribute('aria-hidden'),'true')}}
 console.log('PASS: all 200 ranks render the correct emblem alongside their tier title.');
+run('audio.fanfare=()=>{this.fanfareCalls=(this.fanfareCalls||0)+1};audio.stopFanfare=()=>{}');
+(async()=>{
+run('start();state="ended";game.score=600;game.kills=4;game.saved=true;recordAPI=async()=>[{nickname:game.nickname,score:600,kills:4,rank:5}]');
+await run('checkGrandmaster(game)');assert.equal(run('game.celebrated'),true);assert.equal(run('game.grandmasterRank'),5);assert.equal(sandbox.fanfareCalls,1);assert.equal(elements.get('gmConfetti').children.length,36);assert(elements.get('gmRecord').textContent.includes('5위'));await run('checkGrandmaster(game)');assert.equal(sandbox.fanfareCalls,1);
+run('start();state="ended";game.score=600;game.kills=4;recordAPI=async()=>[{nickname:game.nickname,score:600,kills:4,rank:6}]');await run('checkGrandmaster(game)');assert.equal(run('game.celebrated'),undefined);
+run('recordAPI=async()=>[{nickname:game.nickname,score:900,kills:4,rank:1}]');await run('checkGrandmaster(game)');assert.equal(run('game.celebrated'),undefined);
+run('recordAPI=()=>new Promise(resolve=>{this.resolveRank=resolve});this.oldRound=game');const pending=run('checkGrandmaster(game)');run('goLobby();resolveRank([{nickname:oldRound.nickname,score:600,kills:4,rank:1}])');await pending;assert.equal(run('state'),'intro');assert.equal(sandbox.oldRound.celebrated,undefined);
+console.log('PASS: top-five server rank triggers once; rank six, older best scores and stale requests do not celebrate.');
+})().catch(error=>{console.error(error);process.exitCode=1});

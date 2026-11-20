@@ -1,6 +1,6 @@
 // MP3 media playback for iOS Safari and Android; Web Audio remains for effects.
 class Sound {
- constructor(){
+ constructor(){this.fanfareNodes=[];
   this.ctx=null;this.volume=.65;this.music=document.getElementById('bgm');this.playAttempt=0;this.blocked=false;
   for(const event of ['playing','pause','error','volumechange'])this.music.addEventListener(event,()=>this.updateStatus());
  }
@@ -41,12 +41,21 @@ class Sound {
   button.setAttribute('title',needsTap?'눌러서 BGM을 재생하세요':'BGM과 효과음');
  }
  pause(on){
-  if(on){++this.playAttempt;this.music.pause();if(this.ctx)try{Promise.resolve(this.ctx.suspend()).catch(()=>{})}catch{};this.updateStatus()}
+  if(on){this.stopFanfare();++this.playAttempt;this.music.pause();if(this.ctx)try{Promise.resolve(this.ctx.suspend()).catch(()=>{})}catch{};this.updateStatus()}
   else{
    try{if(window.navigator?.audioSession)window.navigator.audioSession.type='playback'}catch{}
    this.init();this.playMusic();
   }
  }
-tone(f,d,v=.1,type='sine',at=0,end){if(!this.ctx)return;let t=at||this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(end)o.frequency.exponentialRampToValueAtTime(end,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+d+.02)}noise(d,v,f,at=0){if(!this.ctx)return;let t=at||this.ctx.currentTime,s=this.ctx.createBufferSource(),g=this.ctx.createGain(),filter=this.ctx.createBiquadFilter();s.buffer=this.noiseBuffer;filter.type='lowpass';filter.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(filter);filter.connect(g);g.connect(this.master);s.start(t,Math.random());s.stop(t+d)}
+tone(f,d,v=.1,type='sine',at=0,end){if(!this.ctx)return;let t=at||this.ctx.currentTime,o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(end)o.frequency.exponentialRampToValueAtTime(end,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.001,v),t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(this.master);o.start(t);o.stop(t+d+.02);return o}noise(d,v,f,at=0){if(!this.ctx)return;let t=at||this.ctx.currentTime,s=this.ctx.createBufferSource(),g=this.ctx.createGain(),filter=this.ctx.createBiquadFilter();s.buffer=this.noiseBuffer;filter.type='lowpass';filter.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(filter);filter.connect(g);g.connect(this.master);s.start(t,Math.random());s.stop(t+d)}
 shot(){this.noise(.09,.28,3000);this.tone(170,.07,.16,'sawtooth',0,45)}hit(){this.noise(.1,.18,700);this.tone(90,.12,.12,'triangle',0,30)}correct(){if(!this.ctx)return;[329.63,440,659.25,880].forEach((f,i)=>this.tone(f,.4,.12,'triangle',this.ctx.currentTime+i*.07));this.noise(.8,.24,4800)}wrong(){if(!this.ctx)return;this.tone(160,.25,.14,'square');this.tone(119,.4,.1,'triangle',this.ctx.currentTime+.12)}groan(){this.tone(rnd(55,75),.7,.035,'sawtooth',0,35)}reload(){this.noise(.06,.14,3000);setTimeout(()=>{if(state==='playing')this.noise(.08,.15,2200)},300)}
+stopFanfare(){for(const node of this.fanfareNodes||[])try{node.stop()}catch{}this.fanfareNodes=[]}
+fanfare(){
+ this.stopFanfare();if(muted||this.volume===0)return;this.init();if(!this.ctx)return;
+ const at=this.ctx.currentTime+.05;
+ const notes=[[392,0,.18],[523.25,.18,.18],[659.25,.36,.2],[783.99,.58,.3],[1046.5,.92,.35]];
+ const play=(f,start,d,volume,type)=>{const node=this.tone(f,d,volume,type,at+start);if(node)this.fanfareNodes.push(node)};
+ for(const [f,start,d] of notes){play(f,start,d,.2,'triangle');play(f/2,start,d,.055,'sawtooth')}
+ for(const f of [261.63,329.63,392,523.25])play(f,1.28,1.35,.085,'triangle');
+}
 }
