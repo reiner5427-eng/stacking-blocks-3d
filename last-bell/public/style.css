@@ -50,3 +50,9 @@
  .touch-controls #quiz.quiz-collapsed{padding:5px 10px;background:#10201f8c}
  .touch-controls #quiz.quiz-collapsed #question,.touch-controls #quiz.quiz-collapsed #answers,.touch-controls #quiz.quiz-collapsed .quizfoot{display:none}
 }
+/* One transparent sprite sheet keeps all six rank emblems in a single download. */
+.tier-icon{display:inline-block;flex:0 0 auto;width:40px;height:40px;background-image:url('/tier-emblems.png');background-size:300% 200%;background-repeat:no-repeat}
+.icon-grandmaster{background-position:0 0}.icon-veteran{background-position:50% 0}.icon-diamond{background-position:100% 0}.icon-gold{background-position:0 100%}.icon-silver{background-position:50% 100%}.icon-bronze{background-position:100% 100%}
+.ranker-badge{display:inline-flex;align-items:center;gap:5px;vertical-align:middle;padding:3px 8px 3px 3px;font-size:12px;line-height:1.2;white-space:nowrap}
+.tier-info{margin:4px 0 14px;flex:0 0 auto}.tier-info summary{cursor:pointer;color:var(--acid);font-size:13px;padding:8px 0;min-height:36px}.tier-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px;background:#0d1b17;border:1px solid #42563c;border-radius:5px;max-height:180px;overflow:auto}.tier-preview{display:flex;align-items:center;gap:8px}.tier-preview .tier-icon{width:56px;height:56px}.tier-preview b{font-size:12px;font-weight:700}.tier-preview small{display:block;color:#a3b494;font-size:11px;margin-top:4px}
+@media(max-width:600px){.ranker-badge{display:flex;width:max-content;margin:5px 0 0}.ranker-badge .tier-icon{width:36px;height:36px}.tier-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.tier-preview .tier-icon{width:48px;height:48px}}

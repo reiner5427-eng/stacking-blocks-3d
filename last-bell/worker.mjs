@@ -24,10 +24,11 @@ async function api(request,db,path){
 }
 export default {async fetch(request,env){const path=new URL(request.url).pathname;if(path.startsWith('/api/')){try{return await api(request,env.DB,path)}catch(error){console.error('Survivor record request failed');return json({error:'기록 서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.'},503)}}const asset=ASSETS[path];if(!asset||!['GET','HEAD'].includes(request.method))return new Response('페이지가 없어요.',{status:404});return serveAsset(request,asset)}};
 
+const binaryAssetCache=new Map();
 function serveAsset(request,asset){
  const headers={'content-type':asset[0],'cache-control':'no-cache','x-content-type-options':'nosniff','referrer-policy':'no-referrer'};
  if(!asset[2])return new Response(request.method==='HEAD'?null:asset[1],{headers});
- const bytes=Uint8Array.from(atob(asset[1]),c=>c.charCodeAt(0));headers['accept-ranges']='bytes';headers['content-length']=String(bytes.length);
+ let bytes=binaryAssetCache.get(asset);if(!bytes){const decoded=atob(asset[1]);bytes=new Uint8Array(decoded.length);for(let i=0;i<decoded.length;i++)bytes[i]=decoded.charCodeAt(i);binaryAssetCache.set(asset,bytes)}headers['accept-ranges']='bytes';headers['content-length']=String(bytes.length);
  const range=request.headers.get('range');
  if(range){
   const match=/^bytes=(\d*)-(\d*)$/.exec(range);let start=0,end=bytes.length-1;
