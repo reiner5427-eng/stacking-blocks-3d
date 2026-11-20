@@ -89,3 +89,23 @@
 @media(orientation:landscape){.touch-controls #mobile #dash{right:30px;bottom:155px}.touch-controls #quiz{width:min(480px,calc(100vw - 340px))}}
 #mobile #fire.firing .fire-knob{background:radial-gradient(circle at 35% 25%,#a5bd65,#486c38);border-color:#f0ffc1}
 @media(orientation:landscape) and (max-height:340px){.touch-controls #mobile #dash{bottom:135px}}
+/* A wider portrait aiming pad and longer thumb travel, measured by moveFire(). */
+@media(orientation:portrait){
+ .touch-controls #mobile #fire{width:140px;height:140px}
+ .touch-controls #mobile #dash{right:170px}
+ .touch-controls #quiz{bottom:calc(180px + env(safe-area-inset-bottom))}
+}
+@media(orientation:portrait) and (max-width:400px){
+ .touch-controls #mobile{left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right))}
+ .touch-controls #mobile #dash{width:44px;height:44px}
+}
+@media(orientation:portrait) and (max-width:360px){
+ .touch-controls #mobile #fire{width:120px;height:120px}
+ .touch-controls #mobile #dash{right:148px}
+ .touch-controls #quiz{bottom:calc(160px + env(safe-area-inset-bottom))}
+}
+@media(orientation:portrait) and (max-width:340px){
+ .touch-controls #mobile #fire{width:112px;height:112px}
+ .touch-controls #mobile #dash{right:140px}
+ .touch-controls #quiz{bottom:calc(155px + env(safe-area-inset-bottom))}
+}
