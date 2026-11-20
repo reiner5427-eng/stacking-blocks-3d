@@ -30,3 +30,23 @@
 }
 
 #quiz .quizhead,#question,#quiz .quizfoot{text-shadow:0 1px 3px #000,0 0 8px #0008}
+/* Rank titles use the overall rank, including across the four pages. */
+.tier-guide{font-size:12px;line-height:1.8;color:#b1c4a4}
+.ranker-badge.tier-grandmaster{color:#f5bbff;border-color:#cc7ee6;background:#6a286930}
+.ranker-badge.tier-veteran{color:#ffb992;border-color:#d99061;background:#75452330}
+.ranker-badge.tier-diamond{color:#9de7f3;border-color:#6dbccf;background:#25617630}
+.ranker-badge.tier-gold{color:#f0d77c;border-color:#b59a45;background:#78622230}
+.ranker-badge.tier-silver{color:#d6dfe9;border-color:#8c9eae;background:#56667930}
+.ranker-badge.tier-bronze{color:#ddb395;border-color:#9f7352;background:#75482b30}
+@media(orientation:landscape){
+ .touch-controls #quiz{bottom:max(10px,env(safe-area-inset-bottom));width:min(480px,calc(100vw - 300px));padding:8px 10px}
+ .touch-controls #question{font-size:15px;line-height:1.35;margin:5px 0 7px;min-height:0}
+ .touch-controls .quizhead{font-size:10px;letter-spacing:0;min-height:24px;align-items:center}
+ .touch-controls #answers button{min-height:44px;padding:6px 4px;font-size:19px;touch-action:manipulation}
+ .touch-controls .quizfoot{display:none}
+ .touch-controls #quiz.has-feedback .quizfoot{display:block;font-size:11px;line-height:1.4;min-height:0;margin-top:6px}
+ .touch-controls #mobile #dash{right:20px;bottom:120px}
+ .touch-controls #toggleQuiz{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:28px;padding:3px 8px;border:1px solid #698154;border-radius:3px;background:#2b402d;color:var(--acid);font-size:11px;touch-action:manipulation}
+ .touch-controls #quiz.quiz-collapsed{padding:5px 10px;background:#10201f8c}
+ .touch-controls #quiz.quiz-collapsed #question,.touch-controls #quiz.quiz-collapsed #answers,.touch-controls #quiz.quiz-collapsed .quizfoot{display:none}
+}

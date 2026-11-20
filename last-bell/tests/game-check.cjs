@@ -29,3 +29,7 @@ elements.get('stick').onpointerup(event(11));assert.equal(run('firing'),true);ru
 elements.get('fire').listeners.pointerup(event(22));assert.equal(run('firing'),false);
 run('setQuizCollapsed(false)');assert.equal(elements.get('toggleQuiz').getAttribute('aria-expanded'),'true');elements.get('toggleQuiz').onclick();assert.equal(elements.get('toggleQuiz').getAttribute('aria-expanded'),'false');assert.equal(elements.get('toggleQuiz').textContent,'문제 보기');elements.get('toggleQuiz').onclick();assert.equal(elements.get('toggleQuiz').getAttribute('aria-expanded'),'true');
 console.log('PASS: real two-pointer direction changes and bullets, last direction after release, quiz collapse/expand.');
+for(const [rank,name] of [[1,'그랜드마스터'],[5,'그랜드마스터'],[6,'베테랑'],[20,'베테랑'],[21,'다이아'],[50,'다이아'],[51,'골드'],[100,'골드'],[101,'실버'],[150,'실버'],[151,'브론즈'],[200,'브론즈']])assert.equal(run(`rankTier(${rank}).name`),name);
+for(const rank of [0,201,1.5])assert.equal(run(`rankTier(${rank})`),null);
+for(let page=0;page<4;page++){run(`rankingPage=${page};renderRanking()`);for(const tr of elements.get('rankingRows').children){const rank=Number(tr.children[0].textContent.replace('위',''));assert.equal(tr.children[1].children[0].textContent,run(`rankTier(${rank}).name`))}}
+console.log('PASS: all 200 rendered rank badges and every tier boundary.');
