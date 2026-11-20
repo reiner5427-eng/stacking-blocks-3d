@@ -22,4 +22,18 @@ async function api(request,db,path){
  }
  return json({error:'페이지가 없어요.'},404);
 }
-export default {async fetch(request,env){const path=new URL(request.url).pathname;if(path.startsWith('/api/')){try{return await api(request,env.DB,path)}catch(error){console.error('Survivor record request failed');return json({error:'기록 서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.'},503)}}const asset=ASSETS[path];if(!asset||!['GET','HEAD'].includes(request.method))return new Response('페이지가 없어요.',{status:404});return new Response(request.method==='HEAD'?null:asset[1],{headers:{'content-type':asset[0],'cache-control':'no-cache','x-content-type-options':'nosniff','referrer-policy':'no-referrer'}})}};
+export default {async fetch(request,env){const path=new URL(request.url).pathname;if(path.startsWith('/api/')){try{return await api(request,env.DB,path)}catch(error){console.error('Survivor record request failed');return json({error:'기록 서버에 연결하지 못했어요. 잠시 후 다시 시도해 주세요.'},503)}}const asset=ASSETS[path];if(!asset||!['GET','HEAD'].includes(request.method))return new Response('페이지가 없어요.',{status:404});return serveAsset(request,asset)}};
+
+function serveAsset(request,asset){
+ const headers={'content-type':asset[0],'cache-control':'no-cache','x-content-type-options':'nosniff','referrer-policy':'no-referrer'};
+ if(!asset[2])return new Response(request.method==='HEAD'?null:asset[1],{headers});
+ const bytes=Uint8Array.from(atob(asset[1]),c=>c.charCodeAt(0));headers['accept-ranges']='bytes';headers['content-length']=String(bytes.length);
+ const range=request.headers.get('range');
+ if(range){
+  const match=/^bytes=(\d*)-(\d*)$/.exec(range);let start=0,end=bytes.length-1;
+  if(match&&(match[1]||match[2])){if(match[1]){start=Number(match[1]);if(match[2])end=Number(match[2])}else start=Math.max(0,bytes.length-Number(match[2]));end=Math.min(end,bytes.length-1)}
+  if(!match||!(match[1]||match[2])||start>=bytes.length||start>end){headers['content-range']='bytes */'+bytes.length;headers['content-length']='0';return new Response(null,{status:416,headers})}
+  headers['content-range']=`bytes ${start}-${end}/${bytes.length}`;headers['content-length']=String(end-start+1);return new Response(request.method==='HEAD'?null:bytes.slice(start,end+1),{status:206,headers});
+ }
+ return new Response(request.method==='HEAD'?null:bytes,{headers});
+}
