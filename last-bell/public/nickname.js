@@ -1,4 +1,5 @@
-// Shared unchanged nickname rules from reiner5427-eng/market-quiz-cat worker.mjs
+// Shared nickname generation rules synchronized from korean-crossy-cat.
+
 const blockedKorean = /씨발|시발|쉬발|쒸발|씹발|씨팔|시팔|쉬팔|씨바|씨빠|씨벙|시벌|씨벌|쌍놈|쌍년|미친놈|미친년|미친새끼|개새끼|개시키|개색끼|개세끼|새끼야|병신|븅신|빙신|뱅신|븅쉰|등신|또라이|좆|좃|좇|죶|존나|졸라|조낸|존내|지랄|쥐랄|엿먹|꺼져|개같|개년|썅|씨댕|섹스|섹쓰|섹수|쎅스|쌕스|섹1스|야동|야설|음란|포르노|포르나|보짓|보지년|자지년|자위|정액|사정남|딸딸이|성기노출|따먹|기모띠|기모띄|기모티|기모찌|기무띠|키모띠|키모치|앙기모|일베|일간베스트|일베충|일베저장소|운지|노무노무|노무쿤|느그홍어|홍어새끼|홍어충|틀딱|김치녀|맘충|한남충|한녀충|니얼굴|네얼굴|니면상|느금마|느금|느앰|느엠|니애미|니에미|니앰|네애미|니애비|느그엄마|느그애미|느그아빠|느그애비|느그부모|너네엄마|너네애미|니엄마|패드립/;
 const blockedInitials = /ᄉᄇ|ᄊᄇ|ᄉᄑ|ᄇᄉ|ᄌᄅ|ᄌᄂ|ᄀᄉᄁ|ᄉᄉᄉ|ᄋᄇᄎ/;
 const blockedKoreanWord = /^(?:보지|자지|야짤|느금마|애미|애비|급식충|노알라|노짱|슨상님|이기야|응디|게이야|홍어|슨상|똥꼬)(?:[0-9]*)$/;
@@ -26,22 +27,13 @@ const blockedGamblingKoreanWord = /^(?:토토|베팅|배팅)(?:[0-9]*)$/;
 const blockedGamblingEnglish = /casino|gambl|baccarat|blackjack|roulette|sportsbook|bookmaker|jackpot|slotmachine|sportsbet|betting|lottery|lotto/;
 const blockedGamblingEnglishWord = /^(?:bet|bets|poker|slot|slots)$/;
 
-const blockedCustomKorean = /쮸쮸|빼빼로|보숭|보들|앙앙|꼬치|바보|지렁이|아이큐|집|가다|가고|싶다|엄마|사랑해|제발|자유시간|탱크|딱|공산|손|정보|12월/;
+const blockedCustomKorean = /쮸쮸|빼빼로|보숭|보들|앙앙|꼬치|바보|지렁이|아이큐|집|가다|가고|싶다|엄마|사랑해|제발|자유시간/;
 const blockedCustomEnglish = /ebola/;
 const blockedCustomEnglishWord = /^ate$/;
 
 const blockedPoliticalKorean = /히틀러|히틀라|괴벨스|고벨스|괴벨즈|시진핑|이재명|노무현|스탈린|스딸린|김정은|무솔리니|무쏠리니|네오나치|독일나치|나치(?:당|독일|정권|즘|주의|군|만세|충|냥이|고양이)|(?:위대한|최고|친애하는)[령영]도자|[령영]도자(?:동지|님|만세|냥이|고양이)/;
 const blockedPoliticalKoreanWord = /^(?:나[치찌]|[령영]도자)(?:[0-9]*)$/;
 const blockedPoliticalEnglish = /nazi|hitt?ler|goebbels|gobbels|xijinping|leejaem(?:yung|yeong)|rohm(?:oo|u)hyun|stalin|(?:kimjong|gimjeong)(?:un|eun)|mussolini/;
-
-function containsLatinNickname(value) {
-  return typeof value === 'string' && /\p{Script=Latin}/u.test(value.normalize('NFKC'));
-}
-
-function hasReservedNickname(name) {
-  const compact = name.normalize('NFKC').toLowerCase().replace(/[\s\p{Cf}\p{M}_-]/gu, '').normalize('NFKC');
-  return /세무냥이|리트냥이|편입냥이|충주냥이|7급냥이|한전냥이|작수냥이|엠딧냥이|관세냥이|감평냥이|노안|예일리언|에일리언|야르|왜|잼민|응우엔|응우옌|응우|장애|게이|사랑해|죽|니거|니그로|돼지|섹시|울트라|씹|몸무게|돼|당뇨|역류|불|주먹|스마트|안경|도둑|빡|김대중|엄|줴/u.test(compact);
-}
 
 function nicknameWarning(nickname) {
   const normalized = nickname.normalize('NFKC').toLowerCase().replace(/[\p{M}\p{Cf}]/gu, '');
@@ -93,15 +85,45 @@ function hasMultiplePersonalNames(nickname) {
   return parts.length >= 2 && parts.every(part => !nicknameNouns.has(part) && koreanPersonalName.test(part));
 }
 
+const badKorean = /씨발|시발|병신|븅신|좆|존나|지랄|새끼|야동|섹스|일베|일간베스트|운지|홍어충|느금|니애미|니에미|꼬치|바보|탱크|공산|정보|12월|딱|손|도박|카지노|나치|히틀러|시진핑|스탈린|노무현|자살|자해|죽고싶|마약|담배|똥|응가|방귀|지렁이|아이큐|자유시간|빼빼로|쮸쮸|못생|추하|사랑해|엄마|제발|실패|실업자|백수|싫어|미워|여친|남친|커플|소주|맥주|대마|필로폰/;
+const badEnglish = /fuck|shit|bitch|porn|sex|ilbe|ebola|nazi|hitler|suicid|cocaine|cannabis|gambl|casino|gambling|murder|kimochi|gimotti/;
+const normalize = s => s.normalize('NFKC').toLowerCase().replace(/[\p{Cf}\p{M}\s_.-]/gu,'');
+function containsLatinNickname(value) {
+  return typeof value === 'string' && /\p{Script=Latin}/u.test(value.normalize('NFKC'));
+}
 
-function validateNickname(entered) {
- if (typeof entered !== 'string') return '한글이 포함된 2~12자 별명을 입력해 주세요.';
- if (containsLatinNickname(entered)) return '영문자는 닉네임에 사용할 수 없습니다.';
- const compactEntered=entered.normalize('NFKC').replace(/[\s\p{Cf}\p{M}_-]/gu,'');
- const warning=(blockedCustomKorean.test(compactEntered)?'사용할 수 없는 표현이 포함되어 있습니다.':'')||nicknameWarning(entered)||(hasReservedNickname(entered)?'사용할 수 없는 닉네임입니다.':'');
- if(warning)return warning;
- const nickname=entered.normalize('NFKC').trim();
- if(hasMultiplePersonalNames(nickname))return '이름은 한 개만 입력해 주세요.';
- if(!/^[가-힣A-Za-z0-9_ ]{2,12}$/.test(nickname)||!/[가-힣A-Za-z]/.test(nickname)||/\d{5,}/.test(nickname))return '한글이 포함된 2~12자 별명을 입력해 주세요.';
- return '';
+function hasCountryOrNumberNickname(value) {
+  if(typeof value !== 'string') return false;
+  if (/[ㄱ-ㅎᄀ-ᅟᆨ-ᇿꥠ-꥿ퟋ-ퟻ]/u.test(value.normalize('NFKC'))) return true;
+  const text=value.normalize('NFKC').replace(/[\s\p{Cf}\p{M}_·ㆍ-]/gu,'').normalize('NFKC');
+  return /\p{N}/u.test(text) || ["안도라","아랍에미리트","아프가니스탄","앤티가바부다","알바니아","아르메니아","앙골라","아르헨티나","오스트리아","오스트레일리아","아제르바이잔","보스니아헤르체고비나","바베이도스","방글라데시","벨기에","부르키나파소","불가리아","바레인","부룬디","베냉","브루나이","볼리비아","브라질","바하마","부탄","보츠와나","벨라루스","벨리즈","캐나다","콩고킨샤사","중앙아프리카공화국","콩고브라자빌","스위스","코트디부아르","칠레","카메룬","중국","콜롬비아","코스타리카","쿠바","카보베르데","키프로스","체코","독일","지부티","덴마크","도미니카","도미니카공화국","알제리","에콰도르","에스토니아","이집트","에리트리아","스페인","에티오피아","핀란드","피지","미크로네시아","프랑스","가봉","영국","그레나다","조지아","가나","감비아","기니","적도기니","그리스","과테말라","기니비사우","가이아나","온두라스","크로아티아","아이티","헝가리","인도네시아","아일랜드","이스라엘","인도","이라크","이란","아이슬란드","이탈리아","자메이카","요르단","일본","케냐","키르기스스탄","캄보디아","키리바시","코모로","세인트키츠네비스","북한","대한민국","쿠웨이트","카자흐스탄","라오스","레바논","세인트루시아","리히텐슈타인","스리랑카","라이베리아","레소토","리투아니아","룩셈부르크","라트비아","리비아","모로코","모나코","몰도바","몬테네그로","마다가스카르","마셜제도","북마케도니아","말리","미얀마","몽골","모리타니","몰타","모리셔스","몰디브","말라위","멕시코","말레이시아","모잠비크","나미비아","니제르","나이지리아","니카라과","네덜란드","노르웨이","네팔","나우루","뉴질랜드","오만","파나마","페루","파푸아뉴기니","필리핀","파키스탄","폴란드","포르투갈","팔라우","파라과이","카타르","루마니아","세르비아","러시아","르완다","사우디아라비아","솔로몬제도","세이셸","수단","스웨덴","싱가포르","슬로베니아","슬로바키아","시에라리온","산마리노","세네갈","소말리아","수리남","남수단","상투메프린시페","엘살바도르","시리아","에스와티니","차드","토고","태국","타지키스탄","동티모르","투르크메니스탄","튀니지","통가","튀르키예","트리니다드토바고","투발루","탄자니아","우크라이나","우간다","미국","우루과이","우즈베키스탄","바티칸시국","세인트빈센트그레나딘","베네수엘라","베트남","바누아투","사모아","예멘","남아프리카","잠비아","짐바브웨","팔레스타인지구","한국","남한","조선민주주의인민공화국","중화인민공화국","미합중국","영국연합왕국","러시아연방","호주","터키","체코공화국","월남","버마","티모르레스테","스와질란드","카보베르데공화국","바티칸","바티칸시국","팔레스타인","대만","중화민국"].some(term=>text.includes(term));
+}
+
+function hasReservedNickname(name) {
+  if (typeof name === 'string' && /고추|보|놈/u.test(name.normalize('NFKC').replace(/[\s\p{Cf}\p{M}_·ㆍ-]/gu, '').normalize('NFKC'))) return true;
+  if(hasCountryOrNumberNickname(name)) return true;
+  const compact = name.normalize('NFKC').toLowerCase().replace(/[\s\p{Cf}\p{M}_-]/gu, '').normalize('NFKC');
+  return /세무냥이|리트냥이|편입냥이|충주냥이|7급냥이|한전냥이|작수냥이|엠딧냥이|관세냥이|감평냥이|노안|예일리언|에일리언|야르|왜|잼민|응우엔|응우옌|응우|장애|게이|사랑해|죽|니거|니그로|돼지|섹시|울트라|씹|몸무게|바부|야|기분|좋|돼|당뇨|역류|불|주먹|스마트|안경|도둑|빡|김대중|엄|줴|바|부|멍|충|청|통|퉁|뚠|뜬|뚱|바|부|멍|충|청|통|퉁|뚠|뜬|뚱|세기|새기|새끼|춘자|할머니|할아버지|아빠|삼촌|이모|외숙모|숙모|세|리트|세무|맹|토익|토플|발/u.test(compact);
+}
+
+function nicknameError(entered, { registration = true } = {}) {
+  if (containsLatinNickname(entered)) return '영문자는 닉네임에 사용할 수 없습니다.';
+  if (registration && hasReservedNickname(entered)) return '사용할 수 없는 닉네임입니다.';
+  const s = entered.normalize('NFKC').trim();
+  if (!/^[가-힣A-Za-z0-9_ ]{2,12}$/.test(s) || !/[가-힣A-Za-z]/.test(s) || /\d{5,}/.test(s)) {
+    return '한글이 포함된 2~12자 별명을 입력해 주세요.';
+  }
+  if (hasMultiplePersonalNames(s)) return '이름은 한 개만 입력해 주세요.';
+  const warning = nicknameWarning(s);
+  if (warning) return warning;
+  const text = normalize(s);
+  const ko = text.replace(/[^가-힣]/g, '');
+  const en = text.replace(/[^a-z0-9]/g, '').replace(/[013457]/g, char => leet[char]);
+  if (badKorean.test(ko) || badEnglish.test(en)) return '사용할 수 없는 표현이 포함되어 있습니다.';
+  return '';
+}
+
+function validateNickname(entered, options) {
+ if(typeof entered !== 'string')return '한글이 포함된 2~12자 별명을 입력해 주세요.';
+ return nicknameError(entered, options);
 }

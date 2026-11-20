@@ -5,7 +5,7 @@ const json=(body,status=200)=>Response.json(body,{status,headers:{'cache-control
 async function api(request,db,path){
  if(path==='/api/ranking'&&request.method==='GET'){
   const {results}=await db.prepare(`WITH best AS (SELECT nickname,score,kills,correct,elapsed,win,difficulty,started,id,ROW_NUMBER() OVER (PARTITION BY nickname ORDER BY score DESC,kills DESC,elapsed DESC,started,id) AS attempt FROM survivor_runs WHERE season=1 AND finished=1 AND score>0) SELECT nickname,score,kills,correct,elapsed,win,difficulty FROM best WHERE attempt=1 ORDER BY score DESC,kills DESC,elapsed DESC,started,id LIMIT 200`).all();
-  return json(results.filter(row=>!validateNickname(row.nickname)).map((row,i)=>({...row,rank:i+1})));
+  return json(results.filter(row=>!validateNickname(row.nickname, { registration: false })).map((row,i)=>({...row,rank:i+1})));
  }
  if(request.method!=='POST')return json({error:'지원하지 않는 요청이에요.'},405);
  const origin=request.headers.get('origin');if(origin&&origin!==new URL(request.url).origin)return json({error:'게임 화면에서 다시 시도해 주세요.'},403);
