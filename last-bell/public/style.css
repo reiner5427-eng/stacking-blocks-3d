@@ -13,3 +13,18 @@
 .touch-controls #pause{min-width:110px;min-height:48px;padding:10px 12px;font-size:13px;letter-spacing:0;box-shadow:0 3px 14px #0005}
 .touch-controls #sound{min-height:44px;letter-spacing:0;font-size:10px}
 @media(max-width:360px){.touch-controls .brand{font-size:18px}.touch-controls #pause{min-width:100px;padding:10px 8px;font-size:12px}.touch-controls .topright{gap:5px}}
+.quiz-tools{display:flex;align-items:center;gap:10px}#toggleQuiz{display:none}
+@media(orientation:portrait){
+ .touch-controls #quiz{width:calc(100% - 24px);max-width:420px;bottom:calc(150px + env(safe-area-inset-bottom));padding:8px 10px;border-radius:5px}
+ .touch-controls .quizhead{font-size:10px;letter-spacing:0;min-height:24px;align-items:center}
+ .touch-controls #toggleQuiz{display:inline-flex;align-items:center;justify-content:center;min-width:48px;min-height:28px;padding:3px 8px;border:1px solid #698154;border-radius:3px;background:#2b402d;color:var(--acid);font-size:11px;touch-action:manipulation}
+ .touch-controls #question{font-size:15px;line-height:1.35;margin:5px 0 7px;min-height:0}
+ .touch-controls #question span{font-size:12px!important}
+ .touch-controls #answers{gap:7px}
+ .touch-controls #answers button{font-size:19px;padding:6px 4px;min-height:44px;touch-action:manipulation}
+ .touch-controls #answers button small{margin-right:6px}
+ .touch-controls .quizfoot{display:none}
+ .touch-controls #quiz.has-feedback .quizfoot{display:block;font-size:11px;line-height:1.4;margin-top:6px;min-height:0}
+ .touch-controls #quiz.quiz-collapsed{padding:5px 10px;background:#10201fda}
+ .touch-controls #quiz.quiz-collapsed #question,.touch-controls #quiz.quiz-collapsed #answers,.touch-controls #quiz.quiz-collapsed .quizfoot{display:none}
+}
